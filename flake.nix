@@ -21,48 +21,54 @@
     { self, fenix, nix-darwin, nixpkgs, home-manager, nix-homebrew }@inputs:
     let
       configuration = { pkgs, lib, ... }: {
+        nix.linux-builder.enable = true;
+
         nixpkgs.overlays = [ fenix.overlays.default ];
-        environment.systemPackages = with pkgs;
-          let
-            textEditors = [
-              vim
-              ((emacsPackagesFor (emacs.override {
-                withNativeCompilation = false;
-              })).emacsWithPackages (epkgs: [ epkgs.jinx ]))
-            ];
-            gitTools = [ git git-filter-repo ];
-            aiTools = [ ollama ];
-            libraries = [ iconv gnuplot graphviz readline ];
-            commandLineTools = [ gnupg ];
-            programmingLanguages = [
-              openjdk
-              poetry
-              python3
-              nodejs
-              gcc
-              go
-              (pkgs.fenix.complete.withComponents [
-                "cargo"
-                "clippy"
-                "rust-src"
-                "rustc"
-                "rustfmt"
-              ])
-              rust-analyzer-nightly
-              taplo-lsp
-              guile
-              nixfmt-classic
-            ];
-            projectManagement = [ bear tokei ];
-            shell = [ fish zoxide fzf ];
-            applications = [
-              qemu
-              libqalculate
-              telegram-desktop
-              (callPackage ./pkgs/knockknock { })
-            ];
-          in textEditors ++ gitTools ++ aiTools ++ libraries ++ commandLineTools
-          ++ programmingLanguages ++ projectManagement ++ shell ++ applications;
+        environment.systemPackages = with pkgs; [
+          vim
+          ((emacsPackagesFor (emacs.override {
+            withNativeCompilation = false;
+          })).emacsWithPackages (epkgs: [ epkgs.jinx ]))
+
+          git
+          git-filter-repo
+
+          iconv
+          gnuplot
+          graphviz
+          readline
+
+          gnupg
+
+          openjdk
+          poetry
+          python3
+          nodejs
+          gcc
+          go
+          (pkgs.fenix.complete.withComponents [
+            "cargo"
+            "clippy"
+            "rust-src"
+            "rustc"
+            "rustfmt"
+          ])
+          rust-analyzer-nightly
+          taplo-lsp
+          guile
+          nixfmt-classic
+
+          bear
+          tokei
+          fish
+          zoxide
+          fzf
+
+          qemu
+          libqalculate
+          telegram-desktop
+          (callPackage ./pkgs/knockknock { })
+        ];
 
         nix.settings.experimental-features = [ "nix-command" "flakes" ];
       };
