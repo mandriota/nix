@@ -20,26 +20,32 @@
   outputs =
     { self, fenix, nix-darwin, nixpkgs, home-manager, nix-homebrew }@inputs:
     let
+			# config shared between all systems
       commonConfig = { pkgs, lib, ... }: {
         nixpkgs.overlays = [ fenix.overlays.default ];
 
         environment.systemPackages = with pkgs; [
+					# text editors
           vim
           ((emacsPackagesFor (emacs.override {
             withNativeCompilation = false;
           })).emacsWithPackages (epkgs: [ epkgs.jinx ]))
 
+					# git
           git
           git-filter-repo
 
+					# library/utils
           ffmpeg
           iconv
           gnuplot
           graphviz
           readline
 
+					# cryptography
           gnupg
 
+					# programming languages tools
           gcc
           go
           (pkgs.fenix.complete.withComponents [
@@ -54,22 +60,25 @@
           guile
           nixfmt-classic
 
+					# project management
           bear
           tokei
 
+					# shell
           fish
           zoxide
           fzf
 
+					# other
           fastfetch
-
           libqalculate
         ];
 
         nix.settings.experimental-features = [ "nix-command" "flakes" ];
       };
 
-      darwinConfig = { pkgs, lib, ... }: {
+			# config shared between all darwin systems
+      darwinCommonConfig = { pkgs, lib, ... }: {
         nix.linux-builder.enable = true;
 
         environment.systemPackages = with pkgs; [
@@ -211,9 +220,11 @@
           home = "/Users/mark";
           shell = pkgs.fish;
         };
+
+				security.pam.services.sudo_local.touchIdAuth = true;
       };
 
-      nixosConfig = { config, lib, pkgs, home-manager, ... }:
+      nixosCommonConfig = { config, lib, pkgs, home-manager, ... }:
         let
           commonAliases = {
             ll = "ls -lah";
@@ -488,7 +499,7 @@
         specialArgs = inputs;
         modules = [
           commonConfig
-          darwinConfig
+          darwinCommonConfig
           home-manager.darwinModules.home-manager
           {
             home-manager.useGlobalPkgs = true;
@@ -513,7 +524,7 @@
         specialArgs = inputs;
         modules = [
           commonConfig
-          nixosConfig
+          nixosCommonConfig
           home-manager.nixosModules.home-manager
           {
             home-manager.useGlobalPkgs = true;
