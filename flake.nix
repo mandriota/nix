@@ -32,7 +32,7 @@
           git
           git-filter-repo
 
-					ffmpeg
+          ffmpeg
           iconv
           gnuplot
           graphviz
@@ -61,7 +61,7 @@
           zoxide
           fzf
 
-					fastfetch
+          fastfetch
 
           libqalculate
         ];
@@ -203,7 +203,7 @@
         # System metadata
         system.configurationRevision = self.rev or self.dirtyRev or null;
         system.stateVersion = 6;
-				system.primaryUser = "mark";
+        system.primaryUser = "mark";
         nixpkgs.hostPlatform = "aarch64-darwin";
 
         # User configuration
@@ -232,9 +232,10 @@
             # experimentalGPUInstallMode = "replace";
           };
           hardware.graphics.enable = true;
-          hardware.graphics.extraPackages = with pkgs; [
-            # mesa.drivers
-          ];
+          hardware.graphics.extraPackages = with pkgs;
+            [
+              # mesa.drivers
+            ];
           hardware.enableRedistributableFirmware = true;
 
           # Use the systemd-boot EFI boot loader.
@@ -380,7 +381,7 @@
             hyprland = {
               enable = true;
               xwayland.enable = true;
-            };            
+            };
             waybar.enable = true;
           };
 
@@ -419,20 +420,20 @@
           };
 
           nix.settings.experimental-features = [ "nix-command" "flakes" ];
-          
+
           # home-manager.users.ku.wayland.windowManager.hyprland = {
-            # enable = true;
-            # settings = {
-            #  "$mod" = "$SUPER";
-            #  bind = [
-            #    "$mod, Q, killactive"
-            #  ];
-            #  monitor = "eDP-1,1920x1200@60,0x0,1";
-            #  exec-once = [
-            #    "waybar"
-            #    "alacritty"
-            #  ];
-            #};
+          # enable = true;
+          # settings = {
+          #  "$mod" = "$SUPER";
+          #  bind = [
+          #    "$mod, Q, killactive"
+          #  ];
+          #  monitor = "eDP-1,1920x1200@60,0x0,1";
+          #  exec-once = [
+          #    "waybar"
+          #    "alacritty"
+          #  ];
+          #};
           #};
 
           # Some programs need SUID wrappers, can be configured further or are
@@ -510,10 +511,11 @@
 
       nixosConfigurations.kururu = nixpkgs.lib.nixosSystem {
         specialArgs = inputs;
-        modules = [ 
+        modules = [
           commonConfig
           nixosConfig
-          home-manager.nixosModules.home-manager {
+          home-manager.nixosModules.home-manager
+          {
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
             home-manager.users.ku = import ./home.nix;
