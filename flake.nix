@@ -21,64 +21,10 @@
     { self, fenix, nix-darwin, nixpkgs, home-manager, nix-homebrew }@inputs:
     let
 			# config shared between all systems
-      commonConfig = { pkgs, lib, ... }: {
-        nixpkgs.overlays = [ fenix.overlays.default ];
-
-        environment.systemPackages = with pkgs; [
-					# text editors
-          vim
-          ((emacsPackagesFor (emacs.override {
-            withNativeCompilation = false;
-          })).emacsWithPackages (epkgs: [ epkgs.jinx ]))
-
-					# git
-          git
-          git-filter-repo
-
-					# library/utils
-          ffmpeg
-          iconv
-          gnuplot
-          graphviz
-          readline
-
-					# cryptography
-          gnupg
-
-					# programming languages tools
-          gcc
-          go
-          (pkgs.fenix.complete.withComponents [
-            "cargo"
-            "clippy"
-            "rust-src"
-            "rustc"
-            "rustfmt"
-          ])
-          rust-analyzer-nightly
-          taplo-lsp
-          guile
-          nixfmt-classic
-
-					# project management
-          bear
-          tokei
-
-					# shell
-          fish
-          zoxide
-          fzf
-
-					# other
-          fastfetch
-          libqalculate
-        ];
-
-        nix.settings.experimental-features = [ "nix-command" "flakes" ];
-      };
+      commonConfig = import ./hosts/common.nix;
 
 			# config shared between all darwin systems
-      darwinCommonConfig = { pkgs, lib, ... }: {
+      darwinConfig = { pkgs, lib, ... }: {
         nix.linux-builder.enable = true;
 
         environment.systemPackages = with pkgs; [
@@ -224,7 +170,7 @@
 				security.pam.services.sudo_local.touchIdAuth = true;
       };
 
-      nixosCommonConfig = { config, lib, pkgs, home-manager, ... }:
+      nixosConfig = { config, lib, pkgs, home-manager, ... }:
         let
           commonAliases = {
             ll = "ls -lah";
@@ -499,7 +445,7 @@
         specialArgs = inputs;
         modules = [
           commonConfig
-          darwinCommonConfig
+          darwinConfig
           home-manager.darwinModules.home-manager
           {
             home-manager.useGlobalPkgs = true;
@@ -524,7 +470,7 @@
         specialArgs = inputs;
         modules = [
           commonConfig
-          nixosCommonConfig
+          nixosConfig
           home-manager.nixosModules.home-manager
           {
             home-manager.useGlobalPkgs = true;
