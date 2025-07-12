@@ -23,7 +23,6 @@
 			# config shared between all systems
       commonConfig = import ./hosts/common.nix;
 
-			# config shared between all darwin systems
       darwinConfig = import ./hosts/darwin.nix;
 
       nixosConfig = { config, lib, pkgs, home-manager, ... }:
