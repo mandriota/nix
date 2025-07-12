@@ -32,6 +32,7 @@
           git
           git-filter-repo
 
+					ffmpeg
           iconv
           gnuplot
           graphviz
@@ -60,6 +61,8 @@
           zoxide
           fzf
 
+					fastfetch
+
           libqalculate
         ];
 
@@ -76,7 +79,6 @@
           nodejs
 
           qemu
-          telegram-desktop
           (callPackage ./pkgs/knockknock { })
         ];
 
@@ -178,7 +180,7 @@
               enable = true;
               shellAliases = {
                 th = "trash";
-                dr = "darwin-rebuild switch --flake $HOME/.config/nix";
+                dr = "sudo darwin-rebuild switch --flake $HOME/.config/nix";
               };
               interactiveShellInit = ''
                 fish_default_key_bindings
@@ -201,6 +203,7 @@
         # System metadata
         system.configurationRevision = self.rev or self.dirtyRev or null;
         system.stateVersion = 6;
+				system.primaryUser = "mark";
         nixpkgs.hostPlatform = "aarch64-darwin";
 
         # User configuration

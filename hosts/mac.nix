@@ -11,6 +11,7 @@
       "krtirtho/apps/spotube"
       "krita"
       "altserver"
+			"telegram"
     ];
     brews = [ "smartmontools" "enchant" ];
   };
@@ -97,7 +98,7 @@
         enable = true;
         shellAliases = {
           th = "trash";
-          dr = "darwin-rebuild switch --flake $HOME/.config/nix";
+          dr = "sudo darwin-rebuild switch --flake $HOME/.config/nix";
         };
         interactiveShellInit = ''
           fish_default_key_bindings
