@@ -20,7 +20,7 @@
   outputs =
     { self, fenix, nix-darwin, nixpkgs, home-manager, nix-homebrew }@inputs:
     let
-			# config shared between all systems
+      # config shared between all systems
       commonConfig = import ./hosts/common.nix;
 
       darwinConfig = import ./hosts/darwin.nix;

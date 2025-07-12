@@ -2,28 +2,28 @@
   nixpkgs.overlays = [ fenix.overlays.default ];
 
   environment.systemPackages = with pkgs; [
-		# text editors
+    # text editors
     vim
-    ((emacsPackagesFor (emacs.override {
-      withNativeCompilation = false;
-    })).emacsWithPackages (epkgs: [ epkgs.jinx ]))
+    ((emacsPackagesFor
+      (emacs.override { withNativeCompilation = false; })).emacsWithPackages
+      (epkgs: [ epkgs.jinx ]))
 
-		# git
+    # git
     git
     git-filter-repo
 
-		# library/utils
+    # library/utils
     ffmpeg
     iconv
     gnuplot
     graphviz
     readline
 
-		# cryptography
+    # cryptography
     gnupg
 
-		# programming languages tools
-		gcc
+    # programming languages tools
+    gcc
     go
     (pkgs.fenix.complete.withComponents [
       "cargo"
@@ -37,16 +37,16 @@
     guile
     nixfmt-classic
 
-		# project management
+    # project management
     bear
     tokei
 
-		# shell
+    # shell
     fish
     zoxide
     fzf
 
-		# other
+    # other
     fastfetch
     libqalculate
   ];

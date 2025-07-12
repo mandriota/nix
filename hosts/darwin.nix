@@ -18,7 +18,7 @@
       "playcover-community"
       "megasync"
       "lulu"
-			"knockknock"
+      "knockknock"
       "onlyoffice"
       "krtirtho/apps/spotube"
       "krita"
@@ -141,5 +141,5 @@
     shell = pkgs.fish;
   };
 
-	security.pam.services.sudo_local.touchIdAuth = true;
+  security.pam.services.sudo_local.touchIdAuth = true;
 }
