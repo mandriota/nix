@@ -1,4 +1,4 @@
-{ pkgs, lib, ... }: {
+{ self, pkgs, lib, ... }: {
   nix.linux-builder.enable = true;
 
   environment.systemPackages = with pkgs; [
@@ -8,7 +8,6 @@
     nodejs
 
     qemu
-    (callPackage ./pkgs/knockknock { })
   ];
 
   # Homebrew configuration
@@ -19,6 +18,7 @@
       "playcover-community"
       "megasync"
       "lulu"
+			"knockknock"
       "onlyoffice"
       "krtirtho/apps/spotube"
       "krita"
